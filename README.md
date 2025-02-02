@@ -2,7 +2,7 @@
 Este repositório (INT-U4C4) contém o código-fonte de um projeto de implementação de um sistema de iluminação LED controlado por interrupção, desenvolvido utilizando a plataforma Raspberry Pi Pico e a linguagem de programação C.
 
 ## Vídeo Demonstração
-[![Demonstração do Projeto](./video-thumbnail.jpg)](./demo-video.mp4)
+[![Demonstração do Projeto realizado por Italo Cauã da Silva Santos](https://img.youtube.com/vi/kMkJ2YTKotI/0.jpg)](https://www.youtube.com/watch?v=kMkJ2YTKotI)
 
 ## Como Executar o Projeto
 
