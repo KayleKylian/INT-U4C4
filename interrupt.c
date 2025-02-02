@@ -24,8 +24,8 @@ npLED_t leds[LED_COUNT];
 
 
 // Variáveis
-static volatile uint32_t last_time = 0;
-volatile int number_exibition = 0;
+static volatile uint32_t last_time = 0; // Último tempo de evento
+volatile int number_exibition = 0; // Número que será exibido no painel de LEDs
 
 // Prototipação das Funções
 void init_hardware();
@@ -56,6 +56,8 @@ int main()
         }
     }
 }
+
+// Função para exibir um número no painel de LEDs
 void display_number(uint8_t number) {
     clear_leds();
     switch (number) {
@@ -75,6 +77,7 @@ void display_number(uint8_t number) {
             set_led(23, 50, 0, 0);
             break;
         case 1:
+            // Define os LEDs acesos para exibir o número 1
             set_led(1, 0, 50, 0);
             set_led(2, 0, 50, 0);
             set_led(3, 0, 50, 0);
@@ -85,6 +88,7 @@ void display_number(uint8_t number) {
             set_led(16, 0, 50, 0);
             break;
         case 2:
+            // Define os LEDs acesos para exibir o número 2
             set_led(0, 0, 0,  15);
             set_led(1, 0, 0,  15);
             set_led(2, 0, 0,  15);
@@ -104,6 +108,7 @@ void display_number(uint8_t number) {
             set_led(24, 0, 0, 15);
             break;
         case 3:
+            // Define os LEDs acesos para exibir o número 3
             set_led(0, 15, 50, 0);
             set_led(1, 15, 50, 0);
             set_led(2, 15, 50, 0);
@@ -122,6 +127,7 @@ void display_number(uint8_t number) {
             set_led(24, 15, 50, 0);
             break;
         case 4:
+            // Define os LEDs acesos para exibir o número 4
             set_led(1, 15, 15, 0);
             set_led(8, 15, 15, 0);
             set_led(11, 15, 15, 0);
@@ -133,6 +139,7 @@ void display_number(uint8_t number) {
             set_led(23, 15, 15, 0);
             break;
         case 5:
+            // Define os LEDs acesos para exibir o número 5
             set_led(0, 0, 0,  15);
             set_led(1, 0, 0,  15);
             set_led(2, 0, 0,  15);
@@ -152,6 +159,7 @@ void display_number(uint8_t number) {
             set_led(24, 0, 0, 15);
             break;
         case 6:
+            // Define os LEDs acesos para exibir o número 6
             set_led(0, 0, 50, 15);
             set_led(1, 0, 50, 15);
             set_led(2, 0, 50, 15);
@@ -172,6 +180,7 @@ void display_number(uint8_t number) {
             set_led(24, 0, 50, 15);
             break;
         case 7:
+            // Define os LEDs acesos para exibir o número 7
             set_led(20, 10, 0, 10);
             set_led(21, 10, 0, 10);
             set_led(22, 10, 0, 10);
@@ -182,7 +191,8 @@ void display_number(uint8_t number) {
             set_led(6, 10, 0, 10);
             set_led(4, 10, 0, 10);
             break;
-        case 8:          
+        case 8:
+            // Define os LEDs acesos para exibir o número 8
             set_led(24, 0, 10, 10);
             set_led(23, 0, 10, 10);
             set_led(22, 0, 10, 10);
@@ -204,6 +214,7 @@ void display_number(uint8_t number) {
             set_led(0, 0, 10, 10);
             break;
         case 9:
+            // Define os LEDs acesos para exibir o número 9
             set_led(24, 0, 10, 10);
             set_led(23, 0, 10, 10);
             set_led(22, 0, 10, 10);
@@ -228,14 +239,16 @@ void display_number(uint8_t number) {
     }
     write_leds();
 }
+// Exemplo do painel de LEDs
 /*
 24 23 22 21 20
 15 16 17 18 19
 14 13 12 11 10
- 5  6  7  8  9
- 4  3  2  1  0
+05 06 07 08 09
+04 03 02 01 00
 */
 
+// Inicializa o hardware do microcontrolador
 void init_hardware() {
     stdio_init_all();
 
@@ -263,6 +276,7 @@ void init_hardware() {
     write_leds();
 }
 
+// Função de callback para a interrupção
 static void gpio_irq_handler(uint gpio, uint32_t events) {
     // Obtém o tempo atual em microssegundos
     uint32_t current_time = to_us_since_boot(get_absolute_time());
@@ -272,6 +286,7 @@ static void gpio_irq_handler(uint gpio, uint32_t events) {
         // Atualiza o tempo do último evento
         last_time = current_time;
 
+        // Verifica qual botão foi pressionado
         if (gpio == button_a) {
             // Incrementa o número de exibição
             number_exibition = (number_exibition + 1) % 10;
@@ -285,6 +300,7 @@ static void gpio_irq_handler(uint gpio, uint32_t events) {
     }
 }
 
+// Inicializa o Painel de LEDs
 void init_leds(void) {
     uint offset = pio_add_program(pio0, &ws2818b_program);
     np_pio = pio0;
@@ -295,12 +311,14 @@ void init_leds(void) {
     }
 }
 
+// Limpa os LEDs
 void clear_leds(void) {
     for (int i = 0; i < LED_COUNT; i++) {
         leds[i].R = leds[i].G = leds[i].B = 0;
     }
 }
 
+// Define a cor de um LED
 void set_led(int index, uint8_t r, uint8_t g, uint8_t b) {
     if (index < LED_COUNT) {
         leds[index].R = r;
@@ -309,6 +327,7 @@ void set_led(int index, uint8_t r, uint8_t g, uint8_t b) {
     }
 }
 
+// Escreve os LEDs
 void write_leds(void) {
     for (int i = 0; i < LED_COUNT; i++) {
         pio_sm_put_blocking(np_pio, sm, leds[i].G);
